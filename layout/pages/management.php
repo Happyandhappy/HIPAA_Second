@@ -63,14 +63,14 @@
 						<?php 
 							foreach ($tablekeys as $key) {
 								if ($key == "Name")
-									echo "<td><a href='editpage_controller.php?type={$type}&id={$row->id}&action=edit'>{$row->$key}</a></td>";
+									echo "<td><a href='editpage_controller.php?type={$type}&id={$row->id}&action=view'>{$row->$key}</a></td>";
 								else 
 									echo "<td>" . $row->$key . "</td>";
 							}		
 						?>						
 						<td>
 							<a href='<?php echo "editpage_controller.php?type={$type}&id={$row->id}&action=edit" ;?>' 
-								class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="View">
+								class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="Edit">
 	                          <i class="la la-edit"></i>
 	                        </a>
 	                        <a href='<?php echo "funController.php?type={$type}&id={$row->id}&action=delete" ;?>'

@@ -1,9 +1,5 @@
 <?php
 include('layout/header.php');
-if (!isset($_SESSION['user']) || !isset($_SESSION['api'])){
-    header("Location: login.php");
-    exit();
-}
 ?>
 
     <div class="m-grid__item m-grid__item--fluid m-wrapper">

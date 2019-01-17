@@ -32,6 +32,18 @@
 </html>
 
 <script type="text/javascript">
+  function getArrayfromSerialize(str){
+    var units = str.split("&");
+    var results = {};
+    for ( var i =  0 ; i < units.length; i++){
+      key = units[i].split('=')[0];
+      value = units[i].split('=')[1];
+      results[key] = value;
+    }
+    return results;
+  }
+
+
   jQuery(document).ready(function(){
     $('#spiner').addClass('hidden');
     $(".delete").on("click", function(e){
@@ -49,13 +61,25 @@
           data += "&" + checkboxes[i].name + "=" + checkboxes[i].checked;          
         }
         $('form').find('button[type=submit]').addClass('m-loader m-loader--light m-loader--left');
+        $('form').find('button[type=submit]').prop("disabled",true);
         $.ajax({
           url : "funController.php",
           method : "post",
           data : data,
           success : function(res){
             var data = JSON.parse(res);
+            $('form').find('button[type=submit]').prop("disabled",false);
             $('form').find('button[type=submit]').removeClass('m-loader m-loader--light m-loader--left');
+            if (data.status == "success"){
+              old_dt = getArrayfromSerialize(this.data);
+              dt = { "id" : data.data.id, "Name" : old_dt.Name, "User_assigned" : old_dt.User_assigned, action: "edit", type: "device-registry" };
+              $.ajax({
+                url : "funController.php",
+                method : "post",
+                data : dt,
+                success : function(res){console.log(res)}
+              });
+            }
             alert(data.message);
           }
         })

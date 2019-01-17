@@ -3,7 +3,6 @@
 	$facilities = array();
 
 	$data = NULL;
-
 	$res = $api->_AllObjects('contact');
 	if ($res->status == "success") $contacts = $res->data;
 	$res = $api->_AllObjects('facility');
@@ -25,8 +24,9 @@
 					</span>
 					<h3 class="m-portlet__head-text">
 						<?php 
-							if ($id == "") echo "Create " . title($type); 
-							else echo "Edit " . title($type); 
+							if ($action == "edit" && $id == "") echo "Create " . title($type);
+							if ( $action == "edit" && $id != "" ) echo "Edit " . title($type);
+							if ( $action == "view" && $id != "" ) echo "View " . title($type);
 						?>
 					</h3>
 				</div>
@@ -45,7 +45,7 @@
 					<div class="form-group m-form__group row">
 						<label class="col-lg-3 col-form-label">Name</label>
 						<div class="col-lg-6">
-							<input type='text' class='form-control m-input' name='Name' placeholder='Enter Device Registry Name' value='<?php if ($data) echo($data->$id->Name) ?>' required>
+							<input type='text' class='form-control m-input' name='Name' placeholder='Enter Device Registry Name' value='<?php if ($data) echo($data->$id->Name) ?>' required <?php if ($action=="view") echo 'disabled' ?>>
 						</div>
 					</div>
 					<div class="m-form__group form-group row">
@@ -53,7 +53,7 @@
 						<div class="col-lg-6">
 							<div class="m-checkbox-inline">
 								<label class="m-checkbox">
-									<input type="checkbox" name="Active" <?php if ($data) if ($data->$id->Active == "true") echo "checked";?>>
+									<input type="checkbox" name="Active" <?php if ($data) if ($data->$id->Active == "true") echo "checked";?> <?php if ($action=="view") echo 'disabled' ?>>
 									<span></span>
 								</label>
 							</div>
@@ -64,7 +64,7 @@
 					<div class="form-group m-form__group row">
 						<label class="col-lg-3 col-form-label" >User assigned</label>
 						<div class="col-lg-6">
-							<select class="form-control m-input" name="User_assigned">
+							<select class="form-control m-input" name="User_assigned" <?php if ($action=="view") echo 'disabled' ?>>
 								<option value=""> - None -</option>
 								<?php 
 									foreach ($contacts as $key => $value) {
@@ -81,7 +81,7 @@
 					<div class="form-group m-form__group row">
 						<label class="col-lg-3 col-form-label" >Assigned Facility</label>
 						<div class="col-lg-6">
-							<select class="form-control m-input" name="Assigned_Facility">
+							<select class="form-control m-input" name="Assigned_Facility" <?php if ($action=="view") echo 'disabled' ?>>
 								<option value=""> - None -</option>
 								<?php
 									foreach ($facilities as $key => $value) {
@@ -102,7 +102,7 @@
 										<i class="la la-chain"></i>
 									</span>
 								</div>
-								<input type="text" class="form-control m-input" name="IP_Address" placeholder="IP Address" value='<?php if ($data) echo($data->$id->IP_Address) ?>'>
+								<input type="text" class="form-control m-input" name="IP_Address" placeholder="IP Address" value='<?php if ($data) echo($data->$id->IP_Address) ?>' <?php if ($action=="view") echo 'disabled' ?>>
 							</div>
 						</div>
 					</div>
@@ -111,16 +111,17 @@
 						<label class="col-lg-3 col-form-label">Polling Time</label>
 						<div class="col-lg-6">
 							<div class="input-group">
-								<input type="text" class="form-control m-input" name="Polling_Time" placeholder="Polling Time" value='<?php if ($data) echo($data->$id->Polling_Time) ?>' >
+								<input type="text" class="form-control m-input" name="Polling_Time" placeholder="Polling Time" value='<?php if ($data) echo($data->$id->Polling_Time) ?>' <?php if ($action=="view") echo 'disabled' ?>>
 							</div>
 						</div>
 					</div>
 
+					<?php if ($action=="view") {?>					
 					<div class="form-group m-form__group row">
 						<label class="col-lg-3 col-form-label">Last Polling Time</label>
 						<div class="col-lg-6">
 							<div class="input-group date">
-								<input type="text" class="form-control m-input" readonly="" data-date-format="yyyy-mm-ddThh:ii:ssZ" placeholder="Select date &amp; time" id="m_datetimepicker_2_validate" value='<?php if ($data) echo($data->$id->Last_Polling_Time) ?>' name="Last_Polling_Time">
+								<input type="text" class="form-control m-input" readonly="" placeholder="" id="m_datetimepicker_2_validate" value='<?php if ($data) echo($data->$id->Last_Polling_Time) ?>' disabled>
 								<div class="input-group-append">
 									<span class="input-group-text">
 										<i class="la la-calendar-check-o glyphicon-th"></i>
@@ -129,12 +130,13 @@
 							</div>
 						</div>
 					</div>
+					<?php } ?>
 
 					<div class="form-group m-form__group row">
 						<label class="col-lg-3 col-form-label">Notes</label>
 						<div class="col-lg-6">
 							<div class="input-group">
-								<textarea class="form-control m-input" name="Notes" placeholder="Up to 255 characters of simple notes"><?php if ($data) echo($data->$id->Notes) ?></textarea>
+								<textarea class="form-control m-input" name="Notes" placeholder="Up to 255 characters of simple notes" <?php if ($action=="view") echo 'disabled' ?>><?php if ($data) echo($data->$id->Notes) ?></textarea>
 							</div>
 						</div>
 					</div>
@@ -144,10 +146,20 @@
 				<div class="m-form__actions m-form__actions">
 					<div class="row">
 						<div class="col-lg-3"></div>
+						<?php if ($action=="edit") {?>
 						<div class="col-lg-6">
 							<button type="submit" class="btn btn-primary">Save</button>
 							<a href="itemspage_controller.php?type=<?php echo $type; ?>" class="btn btn-secondary">Cancel</a>
 						</div>
+						<?php } else { ?>
+							<a href="editpage_controller.php?type=device-registry&id=<?php echo $id; ?>&action=edit" class="btn btn-primary">
+								<span>
+									<span>&nbsp;Edit&nbsp;</span>
+								</span>
+							</a>
+
+							<a href="itemspage_controller.php?type=<?php echo $type; ?>" class="btn btn-secondary">Cancel</a>	
+						<?php } ?> 
 					</div>
 				</div>
 			</div>

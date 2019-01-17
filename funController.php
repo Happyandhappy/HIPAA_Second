@@ -9,7 +9,8 @@ function login($cred){
 		$_SESSION['ORGID'] = $cred['orgid'];
 		$api = new ApiClient($_SESSION['ORGID'], $_SESSION['USERNAME'], $_SESSION['PASSWORD'], CLIENTID, CLIENTSECURITY);
 
-		if ($api->Login()) {			
+		if ($api->Login()) {
+			$api->expires_in = 30;								
 			$_SESSION['api'] = $api;
 			return array('status' => 'success','message' => 'Successfully logged in!');
 		}
@@ -49,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET'){
 	if ($action == "login") login($fields);
 }
 
-if (!isset($_SESSION['user']) || !isset($_SESSION['api'])) exit();
+if (!isset($_SESSION['user']) || !isset($_SESSION['api'])) die();
+
 $api = $_SESSION['api'];
 
 function edit_Action($api, $type, $id, $fields){	
@@ -60,7 +62,6 @@ function edit_Action($api, $type, $id, $fields){
 	$res = $api->_Insert($type, array($data));	
 	return $res;
 }
-
 
 switch ($action) {
 	case 'delete':

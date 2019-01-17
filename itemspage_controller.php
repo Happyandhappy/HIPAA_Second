@@ -1,11 +1,6 @@
 <?php
 include('layout/header.php');
-if (!isset($_SESSION['user']) || !isset($_SESSION['api'])){
-    header("Location: login.php");
-    exit();
-}
 $api = $_SESSION['api'];
-
 $type = "";
 if (isset($_GET['type'])) $type = $_GET['type'];
 $tabledata = array();
@@ -27,10 +22,13 @@ switch ($type) {
 		$res = $api->_AllObjects($type);
 		foreach ($res->data as $key => $value) {
 			$value->id = $key;
-			$value->Assigned_Facility = $facilities[$value->Assigned_Facility];
-			$value->User_assigned = $contacts[$value->User_assigned];
+			if (array_key_exists($value->Assigned_Facility, $facilities))$value->Assigned_Facility = $facilities[$value->Assigned_Facility];
+			else $value->Assigned_Facility = "";
+			if (array_key_exists($value->User_assigned, $contacts))$value->User_assigned = $contacts[$value->User_assigned];
+			else $value->User_assigned = "";
 			array_push($tabledata, $value);
 		}
+
 		$tablekeys = ["Name","Active", "Assigned_Facility","User_assigned", "IP_Address", "Last_Polling_Time","Polling_Time"];
 		break;	
 	default:		

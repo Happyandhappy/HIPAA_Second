@@ -3,7 +3,7 @@ var BootstrapDatetimepicker={
 		$("#m_datetimepicker_1").datetimepicker({todayHighlight:!0,autoclose:!0,format:"yyyy.mm.dd hh:ii"}),
 		$("#m_datetimepicker_1_modal").datetimepicker({todayHighlight:!0,autoclose:!0,format:"yyyy.mm.dd hh:ii"}),
 		$("#m_datetimepicker_2, #m_datetimepicker_1_validate, #m_datetimepicker_2_validate, #m_datetimepicker_3_validate").
-		datetimepicker({todayHighlight:!0,autoclose:!0,pickerPosition:"bottom-left",format:"yyyy-mm-ddThh:ii:ss"}),
+		datetimepicker({todayHighlight:!0,autoclose:!0,pickerPosition:"bottom-left",format:"yyyy-mm-ddThh:ii:ss", "setDate": new Date()}),
 		$("#m_datetimepicker_2_modal").datetimepicker({todayHighlight:!0,autoclose:!0,pickerPosition:"bottom-left",format:"yyyy/mm/dd hh:ii"}),
 		$("#m_datetimepicker_3").datetimepicker({todayHighlight:!0,autoclose:!0,pickerPosition:"bottom-left",todayBtn:!0,format:"yyyy/mm/dd hh:ii"}),
 		$("#m_datetimepicker_3_modal").datetimepicker({todayHighlight:!0,autoclose:!0,pickerPosition:"bottom-left",todayBtn:!0,format:"yyyy/mm/dd hh:ii"}),

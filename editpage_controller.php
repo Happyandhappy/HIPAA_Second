@@ -1,21 +1,18 @@
 <?php
 include('layout/header.php');
-if (!isset($_SESSION['user']) || !isset($_SESSION['api'])){
-    header("Location: login.php");
-    exit();
-}
 
-$type = "";
-$action = "edit";
-$id = "";
-$api = $_SESSION['api'];
-if ( isset($_GET['type'])) $type = $_GET['type'];
+$type 	= "";
+$action = "view";
+$id 	= "";
+$api 	= $_SESSION['api'];
+
+if ( isset($_GET['type']))   $type = $_GET['type'];
 if ( isset($_GET['action'])) $action = $_GET['action'];
-if ( isset($_GET['id'])) $id = $_GET['id'];
+if ( isset($_GET['id']))     $id = $_GET['id'];
+if ( $id == "") 			 $action = "edit";
 ?>
 
-	<div class="m-grid__item m-grid__item--fluid m-wrapper">
-		
+	<div class="m-grid__item m-grid__item--fluid m-wrapper">		
 		<!-- BEGIN: Subheader -->
 		<div class="m-subheader ">
 			<div class="d-flex align-items-center">

@@ -15,6 +15,8 @@ class ApiClient
 	protected $refresh_token = "";
 	protected $client_id 	= "";
 	protected $client_secret= "";
+	public $expires_in = 0;
+	protected $loggedtime = NULL;
 	function __construct($org_id, $username, $password, $client_id, $client_secret)
 	{	
 		$this->org_id 	= $org_id;
@@ -131,7 +133,9 @@ class ApiClient
 			$this->Token 		= $resdt->access_token;
 			$this->refresh_token= $resdt->refresh_token;
 			$this->tokenType 	= $resdt->token_type;
-			$_SESSION['user'] = $this->username;
+			$this->expires_in   = $resdt->expires_in;
+			$this->loggedtime 	= time();
+			// $_SESSION['user'] 	= $this->username;						
 			// echo "Successfully login!\r\n";
 			return true;
 		}
@@ -159,6 +163,17 @@ class ApiClient
 			$this->refresh_token= $resdt->refresh_token;
 			$this->tokenType 	= $resdt->token_type;
 			echo "Successfully token refreshed!\r\n";
+		}
+	}
+
+	/*
+	 * @Name 		checkSession
+	 * @params 		string 		$nameOfobj  	Name of Objects
+	 * @return 		mixed
+	 */
+	public function checkSession(){
+		if (time() - $this->loggedtime > $this->expires_in) {
+			unset($_SESSION['api']);
 		}
 	}
 
@@ -252,82 +267,6 @@ class ApiClient
 	public function deleteLead($id){		
 		return $this->_DeleteById("lead", $id);
 	}
-
-	/*------------------  CRUD functions for Device Registry  --------------*/
-	/*
-	 * @Name  	getDeviceRegistry
-	 * @params  None
-	 * @return  mixed
-	 */
-	public function getDeviceRegistry($id=null){
-		if ($id==null)
-			$res = $this->_AllObjects("device-registry");
-		else
-			$res = $this->_ObjectById("device-registry", $id);		
-		return $res;
-	}
-
-	/*
-	 * @Name  	insertDeviceRegistry
-	 * @params  $fields
-	 * @return  mixed
-	 */
-	public function insertDeviceRegistry($fields){		
-		$url = $this->endpoint . "/index.php/device-registry?access_token=" . $this->Token;
-		$res = $this->_POST($url, json_encode($fields));
-		return json_decode($res);
-	}
-
-	/*
-	 * @Name  	deleteDeviceRegistry
-	 * @params  string 	$id
-	 * @return  mixed
-	 */
-	public function deleteDeviceRegistry($id){		
-		return $this->_DeleteById("device-registry", $id);
-	}
-
-	/*------------------  CRUD functions for Contact  --------------*/
-	/*
-	 * @Name  	getContacts
-	 * @params  string 		$id
-	 * @return  mixed
-	 */
-	public function getContacts($id=null){
-		if ($id == null) return $this->_AllObjects("contact");
-		return $this->_ObjectById("contact", $id);
-	}
-
-	/*
-	 * @Name  	insertContact
-	 * @params  $fields 	array
-	 * @return  mixed
-	 */
-	public function insertContact($fields){		
-		$url = $this->endpoint . "/index.php/contact?access_token=" . $this->Token;
-		$res = $this->_POST($url, json_encode($fields));
-		return json_decode($res);
-	}
-
-	/*
-	 * @Name  	deleteContact
-	 * @params  string 	$id
-	 * @return  mixed
-	 */
-	public function deleteContact($id){		
-		return $this->_DeleteById("contact", $id);
-	}
-
-	/*------------------  CRUD functions for Facility  --------------*/
-	/*
-	 * @Name  	getFacilities
-	 * @params  string 		$id
-	 * @return  mixed
-	 */
-	public function getFacilities($id=null){
-		if ($id == null) return $this->_AllObjects("facility");
-		return $this->_ObjectById("facility", $id);
-	}
 }
 
 function title($str){	
@@ -362,3 +301,5 @@ function getSidebarName(){
 			break;
 	}
 }
+
+if (isset($_SESSION['api']) && isset($_SESSION['user'])) $_SESSION['api']->checkSession();

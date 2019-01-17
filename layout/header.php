@@ -1,4 +1,10 @@
-<?php require_once('ApiClient/Client.php'); ?>
+<?php 
+  require_once('ApiClient/Client.php');
+  if (!isset($_SESSION['api'])){
+    header("Location: login.php");
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <!-- begin::Head -->

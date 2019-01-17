@@ -133,7 +133,7 @@ class ApiClient
 			$this->Token 		= $resdt->access_token;
 			$this->refresh_token= $resdt->refresh_token;
 			$this->tokenType 	= $resdt->token_type;
-			$this->expires_in   = $resdt->expires_in;
+			$this->expires_in   = $resdt->expires_in/1000;
 			$this->loggedtime 	= time();
 			// $_SESSION['user'] 	= $this->username;						
 			// echo "Successfully login!\r\n";

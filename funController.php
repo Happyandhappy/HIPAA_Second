@@ -1,4 +1,5 @@
 <?php
+
 require_once('ApiClient/Client.php');
 
 function login($cred){
@@ -10,7 +11,6 @@ function login($cred){
 		$api = new ApiClient($_SESSION['ORGID'], $_SESSION['USERNAME'], $_SESSION['PASSWORD'], CLIENTID, CLIENTSECURITY);
 
 		if ($api->Login()) {
-			$api->expires_in = 30;								
 			$_SESSION['api'] = $api;
 			return array('status' => 'success','message' => 'Successfully logged in!');
 		}
@@ -27,7 +27,6 @@ $id = "";
 $action = "";
 $type = "";
 $fields = array();
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET'){
 	if (isset($_GET['id'])) $id = $_GET['id'];
@@ -50,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET'){
 	if ($action == "login") login($fields);
 }
 
-if (!isset($_SESSION['user']) || !isset($_SESSION['api'])) die();
+if (!isset($_SESSION['api'])) die();
 
 $api = $_SESSION['api'];
 
@@ -65,7 +64,7 @@ function edit_Action($api, $type, $id, $fields){
 
 switch ($action) {
 	case 'delete':
-		$res = $api->_DeleteById($type, $id);		
+		$res = $api->_DeleteById($type, $id);
 		header("Location: itemspage_controller.php?type=" . $type);die();
 		break;
 	case 'edit' :		

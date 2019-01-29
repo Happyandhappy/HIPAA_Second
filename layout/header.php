@@ -103,6 +103,7 @@
 
               <!-- BEGIN: Topbar -->
               <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general m-stack--fluid">
+                <h3><?php echo strtoupper($_SESSION['HOST']); ?></h3>
               </div>
 
               <!-- END: Topbar -->

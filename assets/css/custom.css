@@ -49,3 +49,14 @@
 .hidden{
     display: none;
 }
+
+div.m-form__group select{
+    height: 55px!important; 
+}
+
+#m_header_topbar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: none;
+}

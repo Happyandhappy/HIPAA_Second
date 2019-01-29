@@ -33,6 +33,7 @@ session_unset();
 		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Base Styles -->
 		<link rel="shortcut icon" type="image/png" href="https://hipaadev.us/favicon.ico"/>
+		<link rel="stylesheet" type="text/css" href="assets/css/custom.css">
 	</head>
 	<!-- end::Head -->
 
@@ -42,10 +43,10 @@ session_unset();
 		<!-- begin:: Page -->
 		<div class="m-grid m-grid--hor m-grid--root m-page">
 			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-2" id="m_login" style="">
-				<div class="m-grid__item m-grid__item--fluid	m-login__wrapper">
+				<div class="m-grid__item m-grid__item--fluid m-login__wrapper">
 					<div class="m-login__container">
 						<div class="m-login__logo">
-							<a href="#">
+							<a href="index.php">
 								<img src="https://hipaacomplete.com/wp/wp-content/uploads/logo.png">
 							</a>
 						</div>
@@ -56,6 +57,14 @@ session_unset();
 
 							<form class="m-login__form m-form" method="post" action="Controller.php">
 								<input type="hidden" name="action" value="login">
+								<div class="form-group m-form__group">
+									<select class="form-control m-input" name="host" required="">
+										<option value="Hipaadev.us">Hipaadev.us</option>
+										<option value="Hipaastaging.us">Hipaastaging.us</option>
+										<option value="Acceptanceh.us">Acceptanceh.us</option>
+										<option value="Hipaacomplete.com">Hipaacomplete.com</option>
+									</select>
+								</div>
 								<div class="form-group m-form__group">
 									<input class="form-control m-input" type="text" placeholder="Organization ID" name="orgid">
 								</div>

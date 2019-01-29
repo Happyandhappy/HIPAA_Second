@@ -111,7 +111,7 @@
 						<label class="col-lg-3 col-form-label">Polling Time</label>
 						<div class="col-lg-6">
 							<div class="input-group">
-								<input type="text" class="form-control m-input" name="Polling_Time" placeholder="Polling Time" value='<?php if ($data) echo($data->$id->Polling_Time) ?>' <?php if ($action=="view") echo 'disabled' ?>>
+								<input type="number" class="form-control m-input" name="Polling_Time" placeholder="Polling Time" value='<?php if ($data) echo($data->$id->Polling_Time); else echo "0"; ?>' <?php if ($action=="view") echo 'disabled' ?>>
 							</div>
 						</div>
 					</div>

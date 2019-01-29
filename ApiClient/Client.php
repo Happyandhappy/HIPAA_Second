@@ -17,14 +17,14 @@ class ApiClient
 	protected $client_secret= "";
 	public $expires_in = 0;
 	protected $loggedtime = NULL;
-	function __construct($org_id, $username, $password, $client_id, $client_secret)
+	function __construct($host, $org_id, $username, $password, $client_id, $client_secret)
 	{	
 		$this->org_id 	= $org_id;
 		$this->username = $username;
 		$this->password = $password;
 		$this->client_id= $client_id;
 		$this->client_secret = $client_secret;
-		$this->endpoint =  "https://" . SERVICEURL . "/api/1.0";	
+		$this->endpoint =  "https://" . $host . "/api/1.0";	
 	}
 
 	/*

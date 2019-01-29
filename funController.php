@@ -4,11 +4,12 @@ require_once('ApiClient/Client.php');
 
 function login($cred){
 	session_unset();
-	if (isset($cred['email']) && isset($cred['password']) && isset($cred['orgid'])){
+	if (isset($cred['email']) && isset($cred['password']) && isset($cred['orgid']) && isset($cred['host'])){
 		$_SESSION['USERNAME'] = $cred['email'];
 		$_SESSION['PASSWORD'] = $cred['password'];
-		$_SESSION['ORGID'] = $cred['orgid'];
-		$api = new ApiClient($_SESSION['ORGID'], $_SESSION['USERNAME'], $_SESSION['PASSWORD'], CLIENTID, CLIENTSECURITY);
+		$_SESSION['ORGID'] 	  = $cred['orgid'];
+		$_SESSION['HOST'] 	  = $cred['host'];
+		$api = new ApiClient($_SESSION['HOST'], $_SESSION['ORGID'], $_SESSION['USERNAME'], $_SESSION['PASSWORD'], CLIENTID, CLIENTSECURITY);
 
 		if ($api->Login()) {
 			$_SESSION['api'] = $api;
@@ -53,11 +54,11 @@ if (!isset($_SESSION['api'])) die();
 
 $api = $_SESSION['api'];
 
-function edit_Action($api, $type, $id, $fields){	
+function edit_Action($api, $type, $id, $fields){
 	$data = array(
 	        "id" => $id,
 	        "data" => $fields
-	);
+	);	
 	$res = $api->_Insert($type, array($data));	
 	return $res;
 }
